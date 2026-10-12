@@ -1,0 +1,26 @@
+### Prueba 1: La API esta encendida
+GET http://localhost:3001/
+
+### Prueba 2, 4 y 6: consultar todas las citas
+GET http://localhost:3001/registros
+
+### Prueba 3: crear una cita valida
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{
+    "nombre": "Ana Torres",
+    "email": "ana@correo.com",
+    "descripcion": "Control de presion arterial",
+    "fecha": "2026-10-20",
+    "categoria": "Cardiologia"
+}
+
+
+### Prueba 5: cita incompleta, debe responder 400
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{
+    "nombre": "Ana"
+}
