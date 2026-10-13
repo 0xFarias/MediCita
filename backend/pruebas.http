@@ -13,7 +13,7 @@ Content-Type: application/json
     "email": "ana@correo.com",
     "descripcion": "Control de presion arterial",
     "fecha": "2026-10-20",
-    "categoria": "Cardiologia"
+    "categoria": "Cardiología"
 }
 
 
@@ -24,3 +24,62 @@ Content-Type: application/json
 {
     "nombre": "Ana"
 }
+
+### Segunda cita valida
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{
+    "nombre": "Luis Pérez",
+    "email": "luis@correo.com",
+    "descripcion": "Dolor de muela persistente",
+    "fecha": "2026-10-25",
+    "categoria": "Odontología"
+}
+
+
+### Email invalido, debe responder 400
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{
+    "nombre": "Ana Torres",
+    "email": "ana@correo",
+    "descripcion": "Control de presión arterial",
+    "fecha": "2026-10-20",
+    "categoria": "Cardiología"
+}
+
+### Fecha pasada, debe responder 400
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{
+    "nombre": "Ana Torres",
+    "email": "ana@correo.com",
+    "descripcion": "Control de presión arterial",
+    "fecha": "2025-01-10",
+    "categoria": "Cardiología"
+}
+
+### Especialidad invalida, debe responder 400
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{
+    "nombre": "Ana Torres",
+    "email": "ana@correo.com",
+    "descripcion": "Control de presión arterial",
+    "fecha": "2026-10-20",
+    "categoria": "Magia"
+}
+
+
+### Sin cuerpo, debe responder 400
+POST http://localhost:3001/registros
+
+### JSON mal formado, debe responder 400
+POST http://localhost:3001/registros
+Content-Type: application/json
+
+{"nombre":
