@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import registrosRouter from './routes/registros.routes.js';
+import { asegurarArchivo } from './services/registros.store.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -22,6 +23,9 @@ app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({mensaje: 'Error interno del servidor'});
 });
+
+// Crea data/registros.json con [] antes de aceptar peticiones
+await asegurarArchivo();
 
 app.listen(PORT, () => {
     console.log('API en http://localhost:' + PORT);
