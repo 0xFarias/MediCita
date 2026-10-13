@@ -1,23 +1,44 @@
 import { Router } from 'express';
+import { randomUUID } from 'node:crypto';
+import { leerRegistros, guardarRegistros } from '../services/registros.store.js';
+import { validarCita } from '../validators/cita.validator.js';
 
 const router = Router();
 
-const registros = [];
 
-router.get('/', (req, res) => {
+// GET /registros → todas las citas guardadas en el archivo
+router.get('/', async (req, res) => {
+  try {
+    const registros = await leerRegistros();
     res.status(200).json(registros);
+  } catch (err) {
+    console.error('Error al leer registros:', err);
+    res.status(500).json({ mensaje: 'No se pudieron leer los registros.' });
+  }
 });
 
-router.post('/', (req, res) => {
-    const { nombre, email, descripcion, fecha, categoria } = req.body ?? {};
 
-    if (!nombre || !email || !descripcion || !fecha || !categoria) {
-        return res.status(400).json({ mensaje: 'Todos los campos son obligatorios' });
+// POST /registros → valida, crea el ID y guarda sin perder las anteriores
+router.post('/', async (req, res) => {
+  const { valido, errores, limpio } = validarCita(req.body);
+  if (!valido) {
+    return res.status(400).json({ mensaje: 'Datos inválidos.', errores });
+  }
+
+  try {
+    const registros = await leerRegistros();
+    const nueva = {
+      id: randomUUID(),
+      ...limpio,
+      creadoEn: new Date().toISOString(),
     };
-
-    const nueva = {id: registros.length + 1, nombre, email, descripcion, fecha, categoria };
     registros.push(nueva);
+    await guardarRegistros(registros);
     res.status(201).json(nueva);
+  } catch (err) {
+    console.error('Error al guardar la cita:', err);
+    res.status(500).json({ mensaje: 'No se pudo guardar la cita.' });
+  }
 });
 
 export default router;
