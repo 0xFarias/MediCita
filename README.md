@@ -98,12 +98,4 @@ La fecha debe ser hoy o posterior, con formato AAAA-MM-DD.
     │       └── main.jsx
     ├── .gitignore
     └── README.md
-Commit de este paso:
-git add README.md
-git commit -m "docs: README con instalación, API, pruebas y estructura"
-Paso 6 · Subir tu trabajo y cerrar el proyecto
-6.1 Revisa tus commits y súbelos. Ya hiciste cuatro: tarjeta, lista, estilos y README.
-git log --oneline -4
-git status
-git push -u origin feature/lista-estilos-readme
-git log debe mostrar tus 4 commits, y git status no debe mostrar .env, registros.json ni node_modules.
+
